@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
+
+// I M A G E S
 import logo  from '../assets/img/bellotero-logo.svg';
 
 const HeaderWrapper = styled.header`
@@ -31,6 +33,10 @@ const Logo = styled.div`
 `;
 
 function Header () {
+    useEffect(() => {
+        console.log('effect');
+    });
+    
     return (
         <Wrapper>
             <Logo>

@@ -1,12 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+// R O U T E R
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import App from './App';
+import CounterView from './views/Counter.js';
+
+// R E D U X
+import { Provider } from 'react-redux';
+import store from './store/index.js';
+
+import Header from './components/Header.js';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+        <Header />
+        <Router>
+          <Switch>
+            <Route exact path="/" component={App} />
+            <Route path="/counter" component={CounterView} />
+          </Switch>
+        </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
