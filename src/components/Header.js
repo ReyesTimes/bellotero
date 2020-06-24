@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
+import { Link, useLocation } from "react-router-dom";
 import styled from 'styled-components';
+import { Wrapper } from '../styles/utilities.js';
 
 // I M A G E S
 import logo  from '../assets/img/bellotero-logo.svg';
 
-const HeaderWrapper = styled.header`
+// S E R V I C E S
+import { getMenu } from '../services/reqHandle.js';
+
+// MY  H O O K S 
+import useEffectOnlyOnce from '../useEffectOnlyOnce.js';
+
+const HeaderWrapper = styled(Wrapper)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-`;
-
-const Wrapper = styled(HeaderWrapper)`
-    max-width: 768px;
-    margin: 0 auto;
 `;
 
 const Nav = styled.nav`
@@ -28,26 +31,64 @@ const Nav = styled.nav`
     }
 `;
 
+const Item = styled.li`
+    &.active a > span {
+        border-top: ${props => `4px solid ${props.theme.colors.blue}`};
+    }
+
+    a {
+        color: ${props => props.theme.colors.blue};
+        text-decoration: none;
+        padding: 0 24px;
+        font-weight: 500;
+        display: flex;
+    }
+
+    a > span {
+        height: 100%;
+        padding: 24px 0px;
+        border-top: 4px solid transparent;
+    }
+`;
+
 const Logo = styled.div`
 
 `;
 
 function Header () {
-    useEffect(() => {
-        console.log('effect');
+    const [menu, setMenu] = useState([]);
+    const { pathname } = useLocation();
+
+    useEffectOnlyOnce(function() {
+        getMenu()
+        .then(({ items }) => {
+            setMenu(items);
+        })
     });
+
+    function giveActiveStyle(route = '') {
+        return pathname.includes(route) ? 'active': '';
+    }
     
     return (
-        <Wrapper>
+        <HeaderWrapper as="header">
             <Logo>
                 <img src={logo} alt="Ir a inicio" />
             </Logo>
             <Nav>
                 <ul>
-                    <li></li>
+                    {menu.map((el, key) => {
+                        return (
+                            <Item key={key} className={giveActiveStyle(el.route)}>
+                                <Link to={el.route}>
+                                    <span>{el.text}</span>
+                                </Link>
+                            </Item>
+                        )
+                    })}
                 </ul>
             </Nav>
-        </Wrapper>
+        </HeaderWrapper>
     );
 }
 
