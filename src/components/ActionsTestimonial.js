@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ActionsContainer = styled.div`
     display: flex;
@@ -43,12 +44,37 @@ const BtnAction = styled.button`
 `;
 
 function ActionsTestimonial () {
+    const counter = useSelector((state) => state.counter);
+    const length = useSelector((state) => state.testimonials.length);
+    const dispatch = useDispatch()
+
+    function isDecrementAllowed(type, counter) {
+        if (type === 'DECREMENT_COUNTER' && counter > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function isIncrementAllowed(type, counter, length) {
+        if (type === 'INCREMENT_COUNTER' && (counter + 1) < length) {
+            return true;
+        }
+        return false;
+    }
+
+    function changeCounter(type, counter, length) {
+        if (isDecrementAllowed(type, counter) || isIncrementAllowed(type, counter, length)) {
+            dispatch({ type });
+        }
+    }
+
     return (
         <ActionsContainer>
-            <ActionsCurrentPage>1/4</ActionsCurrentPage>
+            <ActionsCurrentPage>{counter + 1}/{length}</ActionsCurrentPage>
             <ActionsButtons>
-                <BtnAction>left</BtnAction>
-                <BtnAction>right</BtnAction>
+                <BtnAction onClick={() => changeCounter('DECREMENT_COUNTER', counter, length)}>left</BtnAction>
+                <BtnAction onClick={() => changeCounter('INCREMENT_COUNTER', counter, length)}>right</BtnAction>
             </ActionsButtons>
         </ActionsContainer>
     );

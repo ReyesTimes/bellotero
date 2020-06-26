@@ -3,7 +3,14 @@ import styled from 'styled-components';
 import { Wrapper, Main, Title } from '../styles/utilities.js';
 import TestimonialContainer from '../components/TestimonialContainer.js';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+// MY  H O O K S 
+import useEffectOnlyOnce from '../useEffectOnlyOnce.js';
+
+
+// S E R V I C E S
+import { getTestimonials } from '../services/reqHandle.js';
 
 const TestimonialTitle = styled(Title)`
   margin-bottom: 80px;
@@ -11,7 +18,15 @@ const TestimonialTitle = styled(Title)`
 
 function App() {
   const title = useSelector((state) => state.testimonialTitle);
+  const dispatch = useDispatch()
 
+  useEffectOnlyOnce(() => {
+    getTestimonials()
+    .then(({ title, reviews }) => {
+      dispatch({ type: 'SET_TESTIMONIALS_LIST', reviews });
+      dispatch({ type: 'SET_TESTIMONIAL_TITLE', title })
+    });
+  });
   return (
     <Main>
       <Wrapper>

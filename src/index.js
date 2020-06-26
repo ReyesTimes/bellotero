@@ -4,8 +4,8 @@ import './index.css';
 
 // R O U T E R
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
-import App from './views/App';
-import CounterView from './views/Counter.js';
+import Testimonial from './views/Testimonial';
+import Calculator from './views/Calculator.js';
 
 // T H E M E
 import { ThemeProvider } from "styled-components";
@@ -23,17 +23,19 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <Router>
             <Header />
-            <Redirect
-              from="/"
-              to="/page-1" 
-            />
             <Switch>
-              <Route exact path="/page-1" component={App} />
-              <Route path="/page-2" component={CounterView} />
+              <Route exact path="/page-1" component={Testimonial} />
+              <Route path="/page-2" component={Calculator} />
             </Switch>
           </Router>
         </ThemeProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
-);
+  );
+  
+  /*<
+    Redirect
+    from="/"
+    to="/page-1" 
+  /> */

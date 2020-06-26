@@ -59,14 +59,14 @@ function Header () {
     const [menu, setMenu] = useState([]);
     const { pathname } = useLocation();
 
-    useEffectOnlyOnce(function() {
+    useEffectOnlyOnce(() => {
         getMenu()
         .then(({ items }) => {
             setMenu(items);
         })
     });
 
-    function giveActiveStyle(route = '') {
+    function giveActiveStyle(route = '', pathname = '') {
         return pathname.includes(route) ? 'active': '';
     }
     
@@ -79,7 +79,7 @@ function Header () {
                 <ul>
                     {menu.map((el, key) => {
                         return (
-                            <Item key={key} className={giveActiveStyle(el.route)}>
+                            <Item key={key} className={giveActiveStyle(el.route, pathname)}>
                                 <Link to={el.route}>
                                     <span>{el.text}</span>
                                 </Link>
