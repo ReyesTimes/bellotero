@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // C O M P O N E N T S
 import ActionsTestimonial from './ActionsTestimonial.js';
-import CardsTestimonial from './CardsTestimonial.js';
+import Carousel from './Carousel.js';
 
 const Container = styled.div`
     position: relative;
@@ -12,7 +12,7 @@ const Container = styled.div`
 function TestimonialContainer() {
     return (
         <Container>
-            <CardsTestimonial />
+            <Carousel />
             <ActionsTestimonial />
         </Container>
     );

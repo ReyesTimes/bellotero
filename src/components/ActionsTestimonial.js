@@ -36,6 +36,7 @@ const ActionsButtons = styled.div`
 `;
 
 const BtnAction = styled.button`
+    font-size: 2rem;
     background-color: ${props => props.theme.colors.blue};
     color: ${props => props.theme.colors.white};
     flex: 0 50%;
@@ -44,8 +45,9 @@ const BtnAction = styled.button`
 `;
 
 function ActionsTestimonial () {
-    const counter = useSelector((state) => state.counter);
-    const length = useSelector((state) => state.testimonials.length);
+    const counter = useSelector((state) => state.testimonial.counter);
+    const length = useSelector((state) => state.testimonial.list.length);
+    const isLoading = useSelector((state) => state.testimonial.isLoading);
     const dispatch = useDispatch()
 
     function isDecrementAllowed(type, counter) {
@@ -71,10 +73,14 @@ function ActionsTestimonial () {
 
     return (
         <ActionsContainer>
-            <ActionsCurrentPage>{counter + 1}/{length}</ActionsCurrentPage>
+            <ActionsCurrentPage>
+                {
+                    isLoading ? 'X/X': `${counter + 1}/${length}`
+                }
+            </ActionsCurrentPage>
             <ActionsButtons>
-                <BtnAction onClick={() => changeCounter('DECREMENT_COUNTER', counter, length)}>left</BtnAction>
-                <BtnAction onClick={() => changeCounter('INCREMENT_COUNTER', counter, length)}>right</BtnAction>
+                <BtnAction onClick={() => changeCounter('DECREMENT_COUNTER', counter, length)}>←</BtnAction>
+                <BtnAction onClick={() => changeCounter('INCREMENT_COUNTER', counter, length)}>→</BtnAction>
             </ActionsButtons>
         </ActionsContainer>
     );

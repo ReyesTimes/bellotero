@@ -13,8 +13,9 @@ import theme from "./theme.js";
 
 // R E D U X
 import { Provider } from 'react-redux';
-import store from './store/index.js';
+import store from './store/store.js';
 
+// C O M P O N E N T S
 import Header from './components/Header.js';
 
 ReactDOM.render(
@@ -24,8 +25,13 @@ ReactDOM.render(
           <Router>
             <Header />
             <Switch>
-              <Route exact path="/page-1" component={Testimonial} />
+              <Route path="/page-1" component={Testimonial} />
               <Route path="/page-2" component={Calculator} />
+              <Redirect
+                from="/"
+                to="/page-1"
+                exact
+              />
             </Switch>
           </Router>
         </ThemeProvider>

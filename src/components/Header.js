@@ -12,6 +12,9 @@ import { getMenu } from '../services/reqHandle.js';
 // MY  H O O K S 
 import useEffectOnlyOnce from '../useEffectOnlyOnce.js';
 
+// C O M P O N E N T S
+import Loading from './loaders/LoaderMenu.js';
+
 const HeaderWrapper = styled(Wrapper)`
     display: flex;
     justify-content: space-between;
@@ -47,22 +50,29 @@ const Item = styled.li`
     a > span {
         height: 100%;
         padding: 24px 0px;
+        transition: 250ms border-top cubic-bezier(.17,.67,.83,.67);
         border-top: 4px solid transparent;
     }
 `;
 
 const Logo = styled.div`
-
+    img {
+        width: 100;
+        height: auto;
+    }
 `;
 
 function Header () {
     const [menu, setMenu] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const { pathname } = useLocation();
 
     useEffectOnlyOnce(() => {
+        setIsLoading(true);
         getMenu()
         .then(({ items }) => {
             setMenu(items);
+            setIsLoading(false);
         })
     });
 
@@ -75,19 +85,25 @@ function Header () {
             <Logo>
                 <img src={logo} alt="Ir a inicio" />
             </Logo>
-            <Nav>
-                <ul>
-                    {menu.map((el, key) => {
-                        return (
-                            <Item key={key} className={giveActiveStyle(el.route, pathname)}>
-                                <Link to={el.route}>
-                                    <span>{el.text}</span>
-                                </Link>
-                            </Item>
-                        )
-                    })}
-                </ul>
-            </Nav>
+            {
+                isLoading ? (
+                    <Loading />
+                ) : (
+                    <Nav>
+                        <ul>
+                            {menu.map((el, key) => {
+                                return (
+                                    <Item key={key} className={giveActiveStyle(el.route, pathname)}>
+                                        <Link to={el.route}>
+                                            <span>{el.text}</span>
+                                        </Link>
+                                    </Item>
+                                )
+                            })}
+                        </ul>
+                    </Nav>
+                )
+            }
         </HeaderWrapper>
     );
 }

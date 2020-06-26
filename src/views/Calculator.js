@@ -1,12 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // U T I L I T I E S  styled-componets
 import { Wrapper, Main, Title } from '../styles/utilities.js';
 
+// MY  H O O K S 
+import useEffectOnlyOnce from '../useEffectOnlyOnce.js';
+
 // C O M P O N E N T S
 import CalculatorHandle from '../components/CalculatorHandle.js';
+
+// S E R V I C E S
+import { setCalcutalorInfo } from '../store/actions.js';
 
 const Container = styled.section`
     display: flex;
@@ -38,9 +44,14 @@ const Description = styled.p`
 `;
 
 const CounterView = () => {
-    const title = useSelector((state) => state.counterTitle);
-    const description = useSelector((state) => state.counterDescription);
+    const title = useSelector((state) => state.calculator.title);
+    const description = useSelector((state) => state.calculator.description);
 
+    const dispatch = useDispatch();
+
+    useEffectOnlyOnce(() => {
+        dispatch(setCalcutalorInfo());
+    });
     return (
         <Main>
             <Wrapper>

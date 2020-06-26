@@ -10,3 +10,7 @@ h1, p, ul {
 }
 
 *{box-sizing: border-box;}
+
+button:focus {
+    outline: thin dotted;
+}
